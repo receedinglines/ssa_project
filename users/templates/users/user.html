@@ -1,12 +1,9 @@
-{% extends "chipin/base.html" %}
+{% extends 'chipin/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Welcome Page</title>
-    <link rel="stylesheet" href="{% static 'chipin/styles.css' %}">
-</head>
-<body>
+
+{% block title %}User Management{% endblock %}
+
+{% block content %}
     <div class="header">
         <div class="user-info">
             <span>{{ request.user.username }}</span>
@@ -15,7 +12,8 @@
                 <button type="submit">Log out</button>
             </form>
         </div>
-    </div>   
+    </div>
+
     {% if messages %}
         <ul class="messages">
         {% for message in messages %}
@@ -23,21 +21,31 @@
         {% endfor %}
         </ul>
     {% endif %}
-    <h1>Welcome, {{ request.user.first_name }}</h1>
-    <p>Username: {{ request.user.username }}</p>
-    <a href="{% url 'chipin:home' %}">ChipIn Homepage</a>
-</body>
-</html>
-{% load static %}
-{% block title %}Login - ChipIn{% endblock %}
 
-{% block content %}
+    <h2>Welcome {{ request.user.first_name }}</h2>
+    <p>This page is for user management functions.</p>
+    <a href="{% url 'chipin:home' %}">Click through to ChipIn Functions</a>
+
     <div class="login-container">
-        <form action="{% url 'users:login' %}" method="post">
+        <form id="login-form" action="{% url 'users:login' %}" method="post" onsubmit="return executeRecaptcha();">
             {% csrf_token %}
             <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
-            <input type="submit" value="Login">
+            <input type="hidden" name="recaptcha-token" id="recaptcha-token">
+            <button type="submit">Login</button>
         </form>
     </div>
+
+    <script src="https://www.google.com/recaptcha/api.js?render=6Lca8nYqAAAAAGLIK-GqMoIa0eVYAM8yQ5QZ9Nr1"></script>
+    <script>
+        function executeRecaptcha() {
+            grecaptcha.ready(function() {
+                grecaptcha.execute('6Lca8nYqAAAAAGLIK-GqMoIa0eVYAM8yQ5QZ9Nr1', { action: 'submit' }).then(function(token) {
+                    document.getElementById('recaptcha-token').value = token;
+                    document.getElementById('login-form').submit();
+                });
+            });
+            return false;  // Prevent default form submission
+        }
+    </script>
 {% endblock %}

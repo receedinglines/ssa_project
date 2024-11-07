@@ -22,10 +22,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-c@7u41pd!@+#w@u@nz=l=%r1-#+^4%ttvttt=9iio_(p#t@k8f'
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+RECAPTCHA_SITE_KEY = "6Lca8nYqAAAAAGLIK-GqMoIa0eVYAM8yQ5QZ9Nr1"
+RECAPTCHA_SECRET_KEY = "6Lca8nYqAAAAAEV4TK-3ouOoLeei3M-QhZKo4ztK"
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+
+# Application definition
 
 INSTALLED_APPS = [
    'users',
@@ -37,7 +43,6 @@ INSTALLED_APPS = [
    'django.contrib.messages',
    'django.contrib.staticfiles',
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -62,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'chipin.context_processors.user_profile',
             ],
         },
     },
@@ -121,10 +127,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-PASSWORD_HASHERS = [
-    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
-    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
-    'django.contrib.auth.hashers.Argon2PasswordHasher',
-    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
-]
